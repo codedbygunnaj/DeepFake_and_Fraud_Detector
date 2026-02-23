@@ -2,7 +2,15 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
 
+from transformers import pipeline
+from PIL import Image
+
 app = FastAPI()
+
+classifier = pipeline(
+    "image-classification",
+    model="dima806/deepfake_vs_real_image_detection"
+)
 
 # CORS enable (React ko allow karega)
 app.add_middleware(
@@ -16,12 +24,16 @@ app.add_middleware(
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
 
-    with open(file.filename, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    image = Image.open(file.file).convert("RGB")
+
+    result = classifier(image)
+
+    label = result[0]['label']
+    score = result[0]['score']
 
     return {
-        "prediction": "Fake",
-        "confidence": 0.87
+        "prediction": label,
+        "confidence": float(score)
     }
 
 
