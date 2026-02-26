@@ -50,11 +50,25 @@ function WebSiteBuilder() {
     <div className="container">
       <h1>AI Deepfake Detector</h1>
 
-      <input
-        type="file"
-        accept="image/*,video/*"
-        onChange={handleFileChange}
-      />
+      <div
+        className="dropzone"
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          const droppedFile = e.dataTransfer.files[0];
+          setFile(droppedFile);
+          setPreview(URL.createObjectURL(droppedFile));
+          setResult(null);
+        }}
+      >
+        <p>Drag & Drop Image / Video</p>
+        <p>OR</p>
+        <input
+          type="file"
+          accept="image/*,video/*"
+          onChange={handleFileChange}
+        />
+      </div>
 
       {preview && (
         <div className="preview">

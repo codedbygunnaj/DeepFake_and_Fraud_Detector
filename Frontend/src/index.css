@@ -41,3 +41,18 @@ button:hover {
   background: #1e293b;
   border-radius: 10px;
 }
+
+.dropzone {
+  border: 2px dashed #3b82f6;
+  padding: 30px;
+  margin: 20px auto;
+  width: 300px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.05);
+  transition: 0.3s;
+}
+
+.dropzone:hover {
+  border-color: #60a5fa;
+}
